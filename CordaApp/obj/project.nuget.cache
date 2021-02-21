@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "x/4Gl+RmOVFEydJPcGtSnsHsApkF2X2fetdUjUSgJgEn5Erx6WxJrTVff7kcb9Rp2FRHuYwFKHdPs8wWCJjgag==",
+  "dgSpecHash": "B6SH17aEDBuldFvzS/Enx7cbburWt4rjtwa+rzj6MI6N7wlIIfJmb5CYqeztAsiKhpQQ6Sc83OssWOupME0w6Q==",
   "success": true,
-  "projectFilePath": "C:\\Users\\mehmet\\Desktop\\CordaApp\\CordaApp\\CordaApp.csproj",
+  "projectFilePath": "C:\\Users\\mehmet\\Desktop\\CordaDotnet\\CordaApp\\CordaApp.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\mehmet\\.nuget\\packages\\bouncycastle.netcore\\1.8.5\\bouncycastle.netcore.1.8.5.nupkg.sha512",
     "C:\\Users\\mehmet\\.nuget\\packages\\google.protobuf\\3.11.4\\google.protobuf.3.11.4.nupkg.sha512",

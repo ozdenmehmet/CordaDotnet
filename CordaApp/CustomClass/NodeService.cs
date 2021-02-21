@@ -8,7 +8,7 @@ namespace CordaApp.CustomClass
 {
     public class NodeService
     {
-        public bool NodeCreate(string _nodename)
+        public async Task<bool> NodeCreate(string _nodename)
         {
             string fileName = _nodename.ToLower();
             fileName = Regex.Replace(fileName, @"\s+", "");
@@ -120,10 +120,10 @@ networks:
 
 
                 //Deploy node to Docker
-                Console.WriteLine("cd deployment && docker-compose up -d && sleep 30".Bash());
+                Console.WriteLine("cd deployment && docker-compose up -d".Bash());
 
                 //Clear folders
-                //"rm -rf out && rm -rf deployment".Bash();
+                "rm -rf out".Bash();
 
                 Console.WriteLine("Node created!");
                 Console.WriteLine("Name: " + nodename);
@@ -137,7 +137,7 @@ networks:
                 return false;
             }
         }
-        public bool NodeDelete(string nodeName)
+        public async Task<bool> NodeDelete(string nodeName)
         {
             string _nodeName = nodeName.ToLower();
             _nodeName = Regex.Replace(_nodeName, @"\s+", "");

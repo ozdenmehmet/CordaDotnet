@@ -936,11 +936,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\mehmet\\Desktop\\CordaApp\\CordaApp\\CordaApp.csproj",
+      "projectUniqueName": "C:\\Users\\mehmet\\Desktop\\CordaDotnet\\CordaApp\\CordaApp.csproj",
       "projectName": "CordaApp",
-      "projectPath": "C:\\Users\\mehmet\\Desktop\\CordaApp\\CordaApp\\CordaApp.csproj",
+      "projectPath": "C:\\Users\\mehmet\\Desktop\\CordaDotnet\\CordaApp\\CordaApp.csproj",
       "packagesPath": "C:\\Users\\mehmet\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\mehmet\\Desktop\\CordaApp\\CordaApp\\obj\\",
+      "outputPath": "C:\\Users\\mehmet\\Desktop\\CordaDotnet\\CordaApp\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\mehmet\\AppData\\Roaming\\NuGet\\NuGet.Config",
