@@ -1,0 +1,286 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+@section Styles {
+    <style>
+        .customTd {
+            background: rgba(232, 235, 240, 0.4) !important;
+            border: none !important;
+            color: #353944 !important;
+            font-size: 18px !important;
+            line-height: 35px;
+            border-radius: 18px;
+        }
+
+        .menuSetup {
+            color: rgba(53, 57, 68, 0.6) !important;
+        }
+
+        .menuDist {
+            color: #363544 !important;
+        }
+
+        .invTable td {
+            border: none;
+        }
+    </style>
+}
+
+<div class="br-section-wrapper" style="background:transparent">
+
+    <div class="row">
+        <div class="col-lg-12">
+
+            <div class="table-content pd-b-10" style="background-color: #ffffff;border-radius:30px;">
+                <table class="table table-borded tableCustom" id="table-list" style="border-radius:30px;padding-left: 20px;text-align: left;padding-right: 20px;">
+                    <thead>
+                        <tr class="d-flex mg-r-35">
+                            <td class="col-lg-2 tx-center mg-r-5 tx-13" style="background:rgba(232, 235, 240, 0.4);border:none;border-radius:18px;color:#E0A100">Distribution</td>
+                            <td class="col-lg-2 tx-center mg-r-5 tx-13" style="background:rgba(232, 235, 240, 0.4);border:none;border-radius:18px;color:#E0A100">Month</td>
+                            <td class="col-lg-1 tx-center mg-r-5 tx-13" style="background:rgba(232, 235, 240, 0.4);border:none;border-radius:18px;color:#E0A100">Class A</td>
+                            <td class="col-lg-1 tx-center mg-r-5 tx-13" style="background:rgba(232, 235, 240, 0.4);border:none;border-radius:18px;color:#E0A100">Class B</td>
+                            <td class="col-lg-1 tx-center mg-r-5 tx-13" style="background:rgba(232, 235, 240, 0.4);border:none;border-radius:18px;color:#E0A100">Class C</td>
+                            <td class="col-lg-1 tx-center mg-r-5 tx-13" style="background:rgba(232, 235, 240, 0.4);border:none;border-radius:18px;color:#E0A100">Class D</td>
+                            <td class="col-lg-4 tx-center tx-13" style="background:rgba(232, 235, 240, 0.4);border:none;border-radius:18px;color:#E0A100">Distribution Type</td>
+                    </thead>
+                    <tbody id="subsBody">
+                        <tr class="d-flex mg-r-35" style="border-radius:18px">
+                            <td name="invId" class="d-none">1</td>
+                            <td name="id" class="col-lg-2 customTd tx-center mg-r-5" id="invName" onclick="onColumnSelected(this)">190</td>
+                            <td name="id" class="col-lg-2 customTd tx-center mg-r-5" id="invName1" onclick="onColumnSelected(this)">1</td>
+                            <td name="id" class="col-lg-1 customTd tx-center mg-r-5" id="invName2" onclick="onColumnSelected(this)">100</td>
+                            <td name="id" class="col-lg-1 customTd tx-center mg-r-5" id="invName3" onclick="onColumnSelected(this)">50</td>
+                            <td name="id" class="col-lg-1 customTd tx-center mg-r-5" id="invName4" onclick="onColumnSelected(this)">30</td>
+                            <td name="id" class="col-lg-1 customTd tx-center mg-r-5" id="invName5" onclick="onColumnSelected(this)">10</td>
+                            <td name="id" class="col-lg-4 customTd tx-center mg-r-5" id="invName6" onclick="onColumnSelected(this)">Normal</td>
+                        </tr>
+
+                    </tbody>
+                </table>
+
+                <div class="mg-x-20" style="background:rgba(232, 235, 240, 0.4);border-radius:18px">
+
+                    <div class="form-group tx-left pd-l-25 pd-r-20 pd-t-10 pd-b-10">
+                        <label for="exampleInputEmail1" class="mg-b-0" style="color:#0057FF;font-size:12px">ADD A NEW DISTRIBUTION</label>
+
+                        <div class="form-row">
+                            <div class="col-lg-6">
+                                <input type="text" class="form-control pd-l-0" style="background:transparent;border:none;border-bottom: 1px solid rgba(0, 0, 0, 0.1);" id="subsFundInp" placeholder="Distribution Amount">
+                            </div>
+                            <div class="col-lg-5">
+                                <input type="text" class="form-control pd-l-0" style="background:transparent;border:none;border-bottom: 1px solid rgba(0, 0, 0, 0.1);" id="subsPsInp" placeholder="Month">
+                            </div>
+                            <div class="col-lg-1 d-flex align-items-center">
+                                <button id="addSub" type="button" class="btn btn-sm btn-default" style="width:40px;background:rgba(182, 194, 214, 0.15) !important;border-radius: 10px;border:none">
+                                    <span class="fas fa-check fa-lg" style="color:#6FB86E"></span>
+                                </button>
+                            </div>
+                        </div>
+
+
+
+                    </div>
+
+
+
+                </div>
+            </div>
+
+
+        </div>
+
+    </div>
+
+
+    <div class="row mg-t-20">
+        <div class="col-lg-12">
+
+            <div class="table-content pd-t-10 pd-b-20" style="background-color: #ffffff;border-radius:30px;">
+                <div class="row mg-x-20" style="height:30px;background-color: #ffffff;border-radius: 30px 30px 0 0">
+                    <div class="col-lg-6 pd-x-0 pd-y-10" style="font-size: 21px;font-weight:500;color:#C7C7C7">INVESTORS OF CLASS A</div>
+                    <div class="col-lg-6 d-flex align-items-center pd-r-60">
+                        <button type="button" class="btn btn-sm btn-default ml-auto" style="width:40px;background:rgba(182, 194, 214, 0.15) !important;border-radius: 10px;border:none" id="removeFund">
+                            <span class="far fa-trash-alt fa-2x" style="color:rgba(53, 56, 68, 0.2);"></span>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="row mg-x-20 mg-t-20">
+                    <div class="col-lg-2 pd-y-10" style="background:rgba(232, 235, 240, 0.4);border-radius:18px;margin-right:-15px">
+                        <h5 class="tx-13 mg-y-0 tx-center tx-normal" style="color:#E0A100">Name of Investor</h5>
+                    </div>
+                    <div class="col-lg-2 offset-lg-4">
+                        <div class="mg-l-20 pd-y-10" style="background:rgba(232, 235, 240, 0.4);border-radius:18px">
+                            <h5 class="tx-13 mg-y-0 tx-center tx-normal" style="color:#E0A100">Amount</h5>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row mg-x-20 mg-t-10">
+                    <div class="col-lg-6 pd-x-0">
+                        <div class="pd-y-20" style="background:rgba(232, 235, 240, 0.4);border-radius:18px" onclick="divSelected(this)">
+                            <h5 class="tx-18 mg-y-0 d-inline tx-normal mg-l-45" style="color:#353944">Rupert Portillo</h5>
+                            <a class="collapsed" data-toggle="collapse" href="#callopse_1" role="button" aria-expanded="false" aria-controls="callopse_1" style=" cursor: default; color: #1d1d1b; padding-left:0px;padding-right: 0px; text-decoration: none;">
+                                <span class="fas fa-angle-down fa-2x float-right mg-r-60" style="color:rgba(53, 56, 68, 0.2);"></span>
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-6 pd-r-0 pd-l-20">
+                        <div class="pd-y-20" style="background:rgba(232, 235, 240, 0.4);border-radius:18px">
+                            <h5 class="tx-18 mg-y-0 mg-l-45 tx-normal" style="color:#353944">10</h5>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Collapse -->
+                <div class="row mg-x-20 mg-t-10">
+
+                    <div class="col-lg-6 collapse" id="callopse_1" style="background:rgba(0, 87, 255, 0.08);border-radius:18px">
+                        <div class="pd-y-0">
+                            <table class="table invTable mg-l-15">
+                                <thead>
+                                    <tr>
+                                        <td class="pd-b-5-force" style="color:#0057FF">Fund Name</td>
+                                        <td class="pd-b-5-force" style="color:#0057FF">Date</td>
+                                        <td class="pd-b-5-force" style="color:#0057FF">Amount</td>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td class="pd-b-5-force" style="color:#353944">Creosafe Fund</td>
+                                        <td class="pd-b-5-force" style="color:#353944">02/02/21</td>
+                                        <td class="pd-b-5-force" style="color:#353944">$ 20.000</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="pd-b-5-force" style="color:#353944">Rail Yard</td>
+                                        <td class="pd-b-5-force" style="color:#353944">02/02/21</td>
+                                        <td class="pd-b-5-force" style="color:#353944">$ 20.000</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <!-- Collapse End -->
+
+                <div class="row mg-x-20 mg-t-10">
+                    <div class="col-lg-6 pd-x-0">
+                        <div class="pd-y-20" style="background:rgba(232, 235, 240, 0.4);border-radius:18px" onclick="divSelected(this)">
+                            <h5 class="tx-18 mg-y-0 d-inline tx-normal mg-l-45" style="color:#353944">Simon Sais</h5>
+                            <a class="collapsed" data-toggle="collapse" href="#callopse_2" role="button" aria-expanded="false" aria-controls="callopse_2" style=" cursor: default; color: #1d1d1b; padding-left:0px;padding-right: 0px; text-decoration: none;">
+                                <span class="fas fa-angle-down fa-2x float-right mg-r-60" style="color:rgba(53, 56, 68, 0.2);"></span>
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-6 pd-r-0 pd-l-20">
+                        <div class="pd-y-20" style="background:rgba(232, 235, 240, 0.4);border-radius:18px">
+                            <h5 class="tx-18 mg-y-0 mg-l-45 tx-normal" style="color:#353944">10</h5>
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+
+
+        </div>
+
+    </div>
+
+</div>
+
+@section Scripts {
+
+    <script type="text/javascript">
+
+        "use strict";
+
+        $(document).ready(function () {
+
+            $("#addFund").click(function () {
+                var fundVal = $('#fundInp').val();
+
+                $("#fundTbody").append("<tr style='background:rgba(232, 235, 240, 0.4)'>" +
+                    "<td name='fundId' class='d-none'>1</td>" +
+                    "<td name='invName' class='col-lg-12 customTd' id='fundName' onclick='onRowSelected(this)'>" + fundVal + "<span class='fas fa-arrows-alt fa-2x float-right mg-r-10' style='color:rgba(53, 56, 68, 0.2)'></span></td>" +
+                    "</tr>");
+            });
+
+            $("#addInv").click(function () {
+                var invVal = $('#invInp').val();
+
+                $("#investorBody").append("<tr style='background:rgba(232, 235, 240, 0.4)'>" +
+                    "<td name='invId' class='d-none'>1</td>" +
+                    "<td name='invName' class='col-lg-12 customTd' id='invName' onclick='onRowSelected(this)'>" + invVal + "</td>" +
+                    "</tr>");
+            });
+
+            $("#addSub").click(function () {
+                var subsNameVal = $('#subsName').val();
+                var subsAmount = $('#subsAmountInp').val();
+                var subsFund = $('#subsFundInp').val();
+                var subsPs = $('#subsPsInp').val();
+
+                $("#subsBody").append("<tr class='d-flex mg-t-20' style='background:rgba(232, 235, 240, 0.4);border-radius:18px'>" +
+                    "<td name='subsId' class='d-none'>1</td>" +
+                    "<td name='subsName' class='col-lg-2 customTd' id='subsName' onclick='onRowSelected(this)'>" + subsNameVal + "</td>" +
+                    "<td name='subsAmount' class='col-lg-2 offset-lg-4 customTd tx-center' id='subsAmount' onclick='onRowSelected(this)'>" + subsAmount + "</td>" +
+                    "<td name='subsFund' class='col-lg-2 customTd tx-center' id='subsFund' onclick='onRowSelected(this)'>" + subsFund + "</td>" +
+                    "<td name='subsPs' class='col-lg-2 customTd tx-center' id='subsPs' style='color:#009ADC !important' onclick='onRowSelected(this)'>" + subsPs + "</td>" +
+                    "</tr>");
+            });
+
+
+
+        });
+
+        function onRowSelected(columnName) {
+            var $row = $(columnName).parents('tr');
+            $($row).addClass('activeRow').siblings().removeClass('activeRow');
+        }
+
+        function onColumnSelected(columnName) {
+            var $column = $(columnName);
+            $($column).addClass('activeRow').siblings().removeClass('activeRow');
+        }
+
+        function divSelected(divName) {
+            var $div = $(divName);
+            if ($div.hasClass("activeRow"))
+                $($div).removeClass('activeRow');
+            else
+                $($div).addClass('activeRow');
+
+        }
+
+    </script>
+
+
+    <script>
+        $(function () {
+
+            $("#fundTbody").sortable({
+                stop: function (event, ui) {
+
+                    $('ul li').each(function (index, item) {
+
+                        // Set each items "alt" attribute to it's corresponding spot in the list.
+                        // Added +1 so that it uses numbers 1-7 instead of 0-6
+                        var liContent = $(item).text();
+                        console.log(liContent);
+                    });
+
+                    console.log("New position: " + ui.item.index());
+                }
+            });
+
+            $("#fundTbody").disableSelection();
+
+
+        });
+    </script>
+
+}

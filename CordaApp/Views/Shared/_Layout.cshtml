@@ -1,0 +1,106 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <title>@ViewData["Title"] - CordaApp</title>
+
+    <!-- vendor css -->
+    <link href="~/dist/lib/fortawesome/fontawesome-free/css/all.min.css" rel="stylesheet">
+    <link href="~/dist/lib/ionicons/css/ionicons.min.css" rel="stylesheet">
+    <link href="~/dist/lib/rickshaw/rickshaw.min.css" rel="stylesheet">
+    <link href="~/dist/lib/select2/css/select2.min.css" rel="stylesheet">
+
+    <!-- Bracket CSS -->
+    <link rel="stylesheet" href="~/dist/css/bracket.css">
+    <link rel="stylesheet" href="~/dist/css/smodern.css">
+    <link rel="stylesheet" href="~/dist/jquery-ui/jquery-ui.css">
+
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+
+    <style>
+
+        .tableCustom {
+            border-collapse: separate;
+            border-spacing: 0 20px;
+            background-color: #ffffff;
+            margin-bottom: 0px !important;
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif !important;
+        }
+
+        #groupname {
+            cursor: pointer;
+        }
+
+        .customTdRad {
+            border-top-left-radius: 18px;
+            border-bottom-left-radius: 18px
+        }
+
+        .activeRow {
+            background-color: #0057FF !important;
+            color: #ffffff !important;
+        }
+
+        .activeRow td {
+            color: #ffffff !important;
+        }
+    </style>
+
+    @RenderSection("Styles", false)
+</head>
+<body style="background:#F3F7FC">
+
+    <div class="br-mainpanel mg-t-30-force">
+
+        <div class="br-pagebody mg-t-0">
+
+            <div class="row mg-x-50-force">
+                <div class="col-lg-4">
+                    <div class="wd-100p" style="margin-left: auto; margin-right: auto;margin-bottom:10px">
+                        <img src="~/images/stc.png" alt="logo">
+                    </div>
+                </div>
+                <div class="col-lg-8 d-flex align-items-center ml-auto">
+                    <a href="/Home/Index" class="tx-16 tx-medium ml-auto mg-r-30-force menuSetup" style="color:#363544">Setup</a>
+                    <a href="/Home/Distributions" class="tx-16 tx-medium mg-r-30-force menuDist" style="color:rgba(53, 57, 68, 0.6)">Distributions</a>
+                </div>
+                <div class="col-lg-12">
+                    <hr class="mg-y-0" style="border: 1px solid #BCC7FF65" />
+                </div>
+            </div>
+
+            @RenderBody()
+
+        </div>
+    </div>
+
+    <script src="~/dist/lib/jquery/jquery.min.js"></script>
+    <script src="~/dist/lib/jquery-ui/ui/widgets/datepicker.js"></script>
+    <script src="~/dist/lib/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="~/dist/lib/perfect-scrollbar/perfect-scrollbar.min.js"></script>
+    <script src="~/dist/lib/moment/min/moment.min.js"></script>
+    <script src="~/dist/lib/peity/jquery.peity.min.js"></script>
+    <script src="~/dist/lib/highlightjs/highlight.pack.min.js"></script>
+    <script src="~/dist/lib/select2/js/select2.min.js"></script>
+
+    <script src="~/dist/js/bracket.js"></script>
+    <script src="~/dist/lib/datatables.net/js/jquery.dataTables.min.js"></script>
+    <script src="~/dist/lib/datatables.net-dt/js/dataTables.dataTables.min.js"></script>
+    <script src="~/dist/lib/datatables.net-responsive/js/dataTables.responsive.min.js"></script>
+    <script src="~/dist/lib/datatables.net-responsive-dt/js/responsive.dataTables.min.js"></script>
+    <script src="~/dist/lib/select2/js/select2.min.js"></script>
+    <script src="~/dist/jquery-ui/jquery-ui.js"></script>
+
+    @RenderSection("Scripts", required: false)
+
+
+
+</body>
+</html>
