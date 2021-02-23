@@ -5,9 +5,9 @@
 @section Styles {
     <style>
         .customTd {
-            background-color: transparent !important;
+            background-color: transparent;
             border: none !important;
-            color: #353944 !important;
+            color: #353944;
             font-size: 18px !important;
             line-height: 35px;
             padding-left: 25px !important;
@@ -38,7 +38,7 @@
                                 <td name="fundOr" class="d-none">@item["fundorder"]</td>
                                 <td name="fundName" class="d-none">@item["fundname"]</td>
                                 <td name="fundDist" class="d-none">@item["distributionrate"]</td>
-                                <td name="fundName" class="col-lg-12 customTd fundName" onclick="onColumnSelect(this)">
+                                <td name="fundName" class="col-lg-12 customTd fundName" onclick="onRowSelect(this)">
                                     @item["fundname"]
                                     <span class="fas fa-arrows-alt fa-2x float-right mg-r-10" style="color:rgba(53, 56, 68, 0.2);"></span>
                                 </td>
@@ -93,7 +93,7 @@
                         {
                             <tr style="background:rgba(232, 235, 240, 0.4)">
                                 <td name="invId" class="d-none">@item["userid"]</td>
-                                <td name="invName" class="col-lg-12 customTd" onclick="onColumnSelect(this)">@item["investorname"]</td>
+                                <td name="invName" class="col-lg-12 customTd" onclick="onRowSelect(this)">@item["investorname"]</td>
                             </tr>
                         }
                     </tbody>
@@ -208,7 +208,7 @@
 
                 $("#fundTbody").append("<tr style='background:rgba(232, 235, 240, 0.4)'>" +
                     "<td name='fundId' class='d-none'>1</td>" +
-                    "<td name='fundName' class='col-lg-12 customTd fundName' onclick='onColumnSelect(this)'>" + fundVal + "<span class='fas fa-arrows-alt fa-2x float-right mg-r-10' style='color:rgba(53, 56, 68, 0.2)'></span></td>" +
+                    "<td name='fundName' class='col-lg-12 customTd fundName' onclick='onRowSelect(this)'>" + fundVal + "<span class='fas fa-arrows-alt fa-2x float-right mg-r-10' style='color:rgba(53, 56, 68, 0.2)'></span></td>" +
                     "</tr>");
 
                 $.ajax({
@@ -248,7 +248,7 @@
 
                 $("#investorBody").append("<tr style='background:rgba(232, 235, 240, 0.4)'>" +
                     "<td name='invId' class='d-none'>1</td>" +
-                    "<td name='invName' class='col-lg-12 customTd' onclick='onColumnSelect(this)'>" + invVal + "</td>" +
+                    "<td name='invName' class='col-lg-12 customTd' onclick='onRowSelect(this)'>" + invVal + "</td>" +
                     "</tr>");
 
                 $.ajax({
@@ -293,8 +293,8 @@
                 $("#subsBody").append("<tr class='d-flex mg-t-20 mg-r-20'>" +
                     "<td name='fundId' class='d-none'>" + fundId + "</td>" +
                     "<td name='userId' class='d-none'>" + invId + "</td>" +
-                    "<td name='subsName' class='col-lg-6 customTd mg-r-20' style='background: rgba(232, 235, 240, 0.4)!important;' onclick='onColumnSelect(this)'>" + subsName + "</td>" +
-                    "<td name='subsAmount' class='col-lg-6 customTd' style='background: rgba(232, 235, 240, 0.4)!important;'>$ " + subsAmount + "</td>" +
+                    "<td name='subsName' class='col-lg-6 customTd mg-r-20 subsName' style='background: rgba(232, 235, 240, 0.4)' onclick='onColumnSelect(this)'>" + subsName + "</td>" +
+                    "<td name='subsAmount' class='col-lg-6 customTd' style='background: rgba(232, 235, 240, 0.4)'>$ " + subsAmount + "</td>" +
                     "</tr>");
 
                 $.ajax({
@@ -319,7 +319,7 @@
         });
 
         $("#removeSubs").click(function () {
-            var tr = $("#subsBody").find(".activeRow");
+            var tr = $("#subsBody").find(".activeRow").parents('tr');
             var fundId = tr.find("td:eq(0)").text();
             var invId = tr.find("td:eq(1)").text();
 
@@ -341,6 +341,12 @@
         $(".fundName").click(function () {
             var tr = $(this).parents('tr');
             var fundId = tr.find("td:eq(0)").text();
+            var fundName = tr.find("td:eq(2)").text();
+            var fundRate = parseInt(tr.find("td:eq(3)").text());
+
+            $('#subsFundId').val(fundId);
+            $('#subsFundName').val(fundName);
+            $('#subsTitle').text("SUBSCRIBERS OF " + fundName + " (Total Investment Amount: 0)");
 
             $.ajax({
                 type: "POST",
@@ -354,10 +360,9 @@
 
                     $.each(subsList, function (index, value) {
                         if (value.fundid != null) {
-                            $('#subsTitle').text("SUBSCRIBERS OF " + value.fundname + " (Total Investment Amount: " + value.totalinvestmentamount + ")");
+                            $('#subsTitle').text("SUBSCRIBERS OF " + fundName + " (Total Investment Amount: " + value.totalinvestmentamount + ")");
 
-                            $('#subsFundId').val(value.fundid);
-                            $('#subsFundName').val(value.fundname);
+                            var cordaRate = (value.investmentamount / value.totalinvestmentamount) * (fundRate / 100);
 
                             var trTop = " ";
                             if (index != 0)
@@ -365,8 +370,8 @@
                             $("#subsBody").append("<tr class='d-flex" + trTop + "mg-r-20'>" +
                                 "<td name='fundId' class='d-none'>" + value.fundid + "</td>" +
                                 "<td name='userId' class='d-none'>" + value.userid + "</td>" +
-                                "<td name='subsName' class='col-lg-6 customTd mg-r-20' style='background: rgba(232, 235, 240, 0.4)!important;' onclick='onColumnSelect(this)'>" + value.investorname + "</td>" +
-                                "<td name='subsAmount' class='col-lg-6 customTd' style='background: rgba(232, 235, 240, 0.4)!important;'>$ " + value.investmentamount + "</td>" +
+                                "<td name='subsName' class='col-lg-6 customTd mg-r-20 subsName' style='background: rgba(232, 235, 240, 0.4)' onclick='onColumnSelect(this)'>" + value.investorname + "</td>" +
+                                "<td name='subsAmount' class='col-lg-6 customTd' style='background: rgba(232, 235, 240, 0.4)'>$ " + value.investmentamount +"</td>" +
                                 "</tr>");
                         }
                     });
@@ -376,9 +381,15 @@
 
         });
 
-        function onColumnSelect(columnName) {
+        function onRowSelect(columnName) {
             var row = $(columnName).parents('tr');
             $(row).addClass('activeRow').siblings().removeClass('activeRow');
+        }
+        function onColumnSelect(columnName) {
+            $('#subsBody tr').each(function () {
+                $(this).find(".subsName").removeClass('activeRow');
+            });
+            $(columnName).addClass('activeRow');
         }
 
 

@@ -22,13 +22,14 @@ namespace CordaApp.CustomClass
 
                 //Set node credentials and create conf file.
                 //HARDCODED
+                string outFolder = DateTime.Now.Ticks.ToString();
                 string nodename = _nodename;
                 string location = "New York";
                 string country = "US";
-                string confCreateCommand = "mkdir out && cd out && touch " + fileName + "_node.conf && : > " + fileName + "_node.conf";
+                string confCreateCommand = "mkdir "+outFolder+ " && cd " + outFolder + " && touch " + fileName + "_node.conf && : > " + fileName + "_node.conf";
                 confCreateCommand.Bash();
 
-                string confDetails = @"
+                string confDetails = @"a
 devMode=true
 myLegalName=""O=" + nodename + @",L=" + location + @",C=" + country + @"""
 p2pAddress=""" + fileName + @":" + port + @"""
@@ -52,17 +53,19 @@ security {
         }
     }
 }";
-                string confFileWrite = "cd out && tee -a " + fileName + "_node.conf << " + confDetails;
+                string confFileWrite = "cd " + outFolder + " && tee -a " + fileName + "_node.conf << " + confDetails;
                 confFileWrite.Bash();
 
                 //Copying cordapps and corda-bootstrapper
-                "cp source/cordapps/* out && cp source/corda-bootstrapper.jar out".Bash();
+                string cordaBootstrapper = "cp source/cordapps/* " + outFolder + " && cp source/corda-bootstrapper.jar " + outFolder;
+                cordaBootstrapper.Bash();
 
                 //Generate node folder with corda-bootstrapper
-                "cd out && java -jar corda-bootstrapper.jar".Bash();
+                string generateNode = "cd " + outFolder + " && java -jar corda-bootstrapper.jar";
+                generateNode.Bash();
 
                 //Create persistence folder
-                string persistenceFolder = "cd out/" + fileName + " && mkdir persistence && cp persistence.mv.db persistence && cp persistence.trace.db persistence";
+                string persistenceFolder = "cd " + outFolder + "/" + fileName + " && mkdir persistence && cp persistence.mv.db persistence && cp persistence.trace.db persistence";
                 persistenceFolder.Bash();
 
                 //Create deployment
@@ -72,17 +75,17 @@ security {
                 "cd deployment && mkdir shared && mkdir shared/cordapps && mkdir shared/node-infos".Bash();
 
                 //Copying shared files to deployment
-                string sharedFiles = "cp source/cordapps/* deployment/shared/cordapps && cp out/" + fileName + "/additional-node-infos/* source/node-infos && cp source/node-infos/* deployment/shared/node-infos && cp source/network-parameters deployment/shared";
+                string sharedFiles = "cp source/cordapps/* deployment/shared/cordapps && cp " + outFolder + "/" + fileName + "/additional-node-infos/* source/node-infos && cp source/node-infos/* deployment/shared/node-infos && cp source/network-parameters deployment/shared";
                 sharedFiles.Bash();
 
                 //Copy node folder to deployment
-                string nodeFolder = "mv out/" + fileName + " deployment/";
+                string nodeFolder = "mv " + outFolder + "/" + fileName + " deployment/";
                 nodeFolder.Bash();
 
                 //Create yaml file for deployment to docker image
                 string yamlFileCreate = "cd deployment && touch docker-compose.yaml && : > docker-compose.yaml";
                 yamlFileCreate.Bash();
-                string yamlDetails = @"
+                string yamlDetails = @"a 
 version: '3.5'  
 services:
   " + fileName + @": 
@@ -123,7 +126,8 @@ networks:
                 Console.WriteLine("cd deployment && docker-compose up -d".Bash());
 
                 //Clear folders
-                "rm -rf out".Bash();
+                string clearOut = "rm -rf " + outFolder;
+                clearOut.Bash();
 
                 Console.WriteLine("Node created!");
                 Console.WriteLine("Name: " + nodename);

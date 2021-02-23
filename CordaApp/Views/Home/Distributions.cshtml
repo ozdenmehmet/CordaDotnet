@@ -5,9 +5,9 @@
 @section Styles {
     <style>
         .customTd {
-            background: rgba(232, 235, 240, 0.4) !important;
+            background: rgba(232, 235, 240, 0.4);
             border: none !important;
-            color: #353944 !important;
+            color: #353944;
             font-size: 18px !important;
             line-height: 35px;
             border-radius: 18px;
@@ -34,27 +34,59 @@
 
             <div class="table-content pd-b-10" style="background-color: #ffffff;border-radius:30px;">
                 <table class="table table-borded tableCustom" id="table-list" style="border-radius:30px;padding-left: 20px;text-align: left;padding-right: 20px;">
-                    <thead>
+                    <thead id="distThead">
                         <tr class="d-flex mg-r-35">
                             <td class="col-lg-2 tx-center mg-r-5 tx-13" style="background:rgba(232, 235, 240, 0.4);border:none;border-radius:18px;color:#E0A100">Distribution</td>
                             <td class="col-lg-2 tx-center mg-r-5 tx-13" style="background:rgba(232, 235, 240, 0.4);border:none;border-radius:18px;color:#E0A100">Month</td>
-                            <td class="col-lg-1 tx-center mg-r-5 tx-13" style="background:rgba(232, 235, 240, 0.4);border:none;border-radius:18px;color:#E0A100">Class A</td>
-                            <td class="col-lg-1 tx-center mg-r-5 tx-13" style="background:rgba(232, 235, 240, 0.4);border:none;border-radius:18px;color:#E0A100">Class B</td>
-                            <td class="col-lg-1 tx-center mg-r-5 tx-13" style="background:rgba(232, 235, 240, 0.4);border:none;border-radius:18px;color:#E0A100">Class C</td>
-                            <td class="col-lg-1 tx-center mg-r-5 tx-13" style="background:rgba(232, 235, 240, 0.4);border:none;border-radius:18px;color:#E0A100">Class D</td>
-                            <td class="col-lg-4 tx-center tx-13" style="background:rgba(232, 235, 240, 0.4);border:none;border-radius:18px;color:#E0A100">Distribution Type</td>
+                            @foreach (var item in ViewBag.fundList)
+                            {
+                                <td class="col-lg-1 tx-center mg-r-5 tx-13 fundName" style="background:rgba(232, 235, 240, 0.4);border:none;border-radius:18px;color:#E0A100" data-id="@item["fundid"]">@item["fundname"]</td>
+                            }
+                            @{
+                                int fundCount = 0;
+                                int itemCounter = 0;
+                                if (ViewBag.monthList.Count != 0)
+                                {
+                                    fundCount = ViewBag.amountList.Count / ViewBag.monthList.Count;
+                                }
+                                int divCol = 8 - fundCount;
+                            }
+                            <td class="col-lg-@divCol tx-center tx-13" style="background:rgba(232, 235, 240, 0.4);border:none;border-radius:18px;color:#E0A100">Distribution Type</td>
                     </thead>
-                    <tbody id="subsBody">
-                        <tr class="d-flex mg-r-35" style="border-radius:18px">
-                            <td name="invId" class="d-none">1</td>
-                            <td name="id" class="col-lg-2 customTd tx-center mg-r-5" id="invName" onclick="onColumnSelected(this)">190</td>
-                            <td name="id" class="col-lg-2 customTd tx-center mg-r-5" id="invName1" onclick="onColumnSelected(this)">1</td>
-                            <td name="id" class="col-lg-1 customTd tx-center mg-r-5" id="invName2" onclick="onColumnSelected(this)">100</td>
-                            <td name="id" class="col-lg-1 customTd tx-center mg-r-5" id="invName3" onclick="onColumnSelected(this)">50</td>
-                            <td name="id" class="col-lg-1 customTd tx-center mg-r-5" id="invName4" onclick="onColumnSelected(this)">30</td>
-                            <td name="id" class="col-lg-1 customTd tx-center mg-r-5" id="invName5" onclick="onColumnSelected(this)">10</td>
-                            <td name="id" class="col-lg-4 customTd tx-center mg-r-5" id="invName6" onclick="onColumnSelected(this)">Normal</td>
-                        </tr>
+                    <tbody id="distBody">
+                        @foreach (var item in ViewBag.monthList)
+                        {
+                            int monthDist = 0;
+                            int counter = itemCounter * fundCount;
+                            <tr class="d-flex mg-r-35 mg-b-20" style="border-radius:18px">
+                                <td class="col-lg-2 customTd tx-center mg-r-5">@ViewBag.distList[itemCounter]</td>
+                                <td class="col-lg-2 customTd tx-center mg-r-5">@item</td>
+                                @for (int col = 0; col < fundCount; col++)
+                                {
+                                    <td class="col-lg-1 customTd tx-center mg-r-5 distRate" onclick='onColumnSelect(this)'>@ViewBag.amountList[counter]</td>
+                                    monthDist += @ViewBag.amountList[counter];
+                                    counter++;
+                                }
+
+                                @if (monthDist < int.Parse(ViewBag.distList[itemCounter]))
+                                {
+                                    <td class="col-lg-@divCol customTd tx-center mg-r-5">Over Distribution</td>
+                                }
+                                @if (monthDist == int.Parse(ViewBag.distList[itemCounter]))
+                                {
+                                    <td class="col-lg-@divCol customTd tx-center mg-r-5">Normal Distribution</td>
+                                }
+                                @if (monthDist > int.Parse(ViewBag.distList[itemCounter]))
+                                {
+
+                                    <td class="col-lg-@divCol customTd tx-center mg-r-5">Insufficient Distribution</td>
+                                }
+
+
+                            </tr>
+                            itemCounter++;
+                        }
+
 
                     </tbody>
                 </table>
@@ -66,13 +98,13 @@
 
                         <div class="form-row">
                             <div class="col-lg-6">
-                                <input type="text" class="form-control pd-l-0" style="background:transparent;border:none;border-bottom: 1px solid rgba(0, 0, 0, 0.1);" id="subsFundInp" placeholder="Distribution Amount">
+                                <input type="text" class="form-control pd-l-0" style="background:transparent;border:none;border-bottom: 1px solid rgba(0, 0, 0, 0.1);" id="distAmountInp" placeholder="Distribution Amount">
                             </div>
                             <div class="col-lg-5">
-                                <input type="text" class="form-control pd-l-0" style="background:transparent;border:none;border-bottom: 1px solid rgba(0, 0, 0, 0.1);" id="subsPsInp" placeholder="Month">
+                                <input type="text" class="form-control pd-l-0" style="background:transparent;border:none;border-bottom: 1px solid rgba(0, 0, 0, 0.1);" id="distMonthInp" placeholder="Month">
                             </div>
                             <div class="col-lg-1 d-flex align-items-center">
-                                <button id="addSub" type="button" class="btn btn-sm btn-default" style="width:40px;background:rgba(182, 194, 214, 0.15) !important;border-radius: 10px;border:none">
+                                <button id="addDist" type="button" class="btn btn-sm btn-default" style="width:40px;background:rgba(182, 194, 214, 0.15) !important;border-radius: 10px;border:none">
                                     <span class="fas fa-check fa-lg" style="color:#6FB86E"></span>
                                 </button>
                             </div>
@@ -117,70 +149,9 @@
                     </div>
                 </div>
 
-                <div class="row mg-x-20 mg-t-10">
-                    <div class="col-lg-6 pd-x-0">
-                        <div class="pd-y-20" style="background:rgba(232, 235, 240, 0.4);border-radius:18px" onclick="divSelected(this)">
-                            <h5 class="tx-18 mg-y-0 d-inline tx-normal mg-l-45" style="color:#353944">Rupert Portillo</h5>
-                            <a class="collapsed" data-toggle="collapse" href="#callopse_1" role="button" aria-expanded="false" aria-controls="callopse_1" style=" cursor: default; color: #1d1d1b; padding-left:0px;padding-right: 0px; text-decoration: none;">
-                                <span class="fas fa-angle-down fa-2x float-right mg-r-60" style="color:rgba(53, 56, 68, 0.2);"></span>
-                            </a>
-                        </div>
-                    </div>
+                <div id="invSec"></div>
 
-                    <div class="col-lg-6 pd-r-0 pd-l-20">
-                        <div class="pd-y-20" style="background:rgba(232, 235, 240, 0.4);border-radius:18px">
-                            <h5 class="tx-18 mg-y-0 mg-l-45 tx-normal" style="color:#353944">10</h5>
-                        </div>
-                    </div>
-                </div>
 
-                <!-- Collapse -->
-                <div class="row mg-x-20 mg-t-10">
-
-                    <div class="col-lg-6 collapse" id="callopse_1" style="background:rgba(0, 87, 255, 0.08);border-radius:18px">
-                        <div class="pd-y-0">
-                            <table class="table invTable mg-l-15">
-                                <thead>
-                                    <tr>
-                                        <td class="pd-b-5-force" style="color:#0057FF">Fund Name</td>
-                                        <td class="pd-b-5-force" style="color:#0057FF">Date</td>
-                                        <td class="pd-b-5-force" style="color:#0057FF">Amount</td>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td class="pd-b-5-force" style="color:#353944">Creosafe Fund</td>
-                                        <td class="pd-b-5-force" style="color:#353944">02/02/21</td>
-                                        <td class="pd-b-5-force" style="color:#353944">$ 20.000</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="pd-b-5-force" style="color:#353944">Rail Yard</td>
-                                        <td class="pd-b-5-force" style="color:#353944">02/02/21</td>
-                                        <td class="pd-b-5-force" style="color:#353944">$ 20.000</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-                <!-- Collapse End -->
-
-                <div class="row mg-x-20 mg-t-10">
-                    <div class="col-lg-6 pd-x-0">
-                        <div class="pd-y-20" style="background:rgba(232, 235, 240, 0.4);border-radius:18px" onclick="divSelected(this)">
-                            <h5 class="tx-18 mg-y-0 d-inline tx-normal mg-l-45" style="color:#353944">Simon Sais</h5>
-                            <a class="collapsed" data-toggle="collapse" href="#callopse_2" role="button" aria-expanded="false" aria-controls="callopse_2" style=" cursor: default; color: #1d1d1b; padding-left:0px;padding-right: 0px; text-decoration: none;">
-                                <span class="fas fa-angle-down fa-2x float-right mg-r-60" style="color:rgba(53, 56, 68, 0.2);"></span>
-                            </a>
-                        </div>
-                    </div>
-
-                    <div class="col-lg-6 pd-r-0 pd-l-20">
-                        <div class="pd-y-20" style="background:rgba(232, 235, 240, 0.4);border-radius:18px">
-                            <h5 class="tx-18 mg-y-0 mg-l-45 tx-normal" style="color:#353944">10</h5>
-                        </div>
-                    </div>
-                </div>
 
 
             </div>
@@ -200,87 +171,81 @@
 
         $(document).ready(function () {
 
-            $("#addFund").click(function () {
-                var fundVal = $('#fundInp').val();
 
-                $("#fundTbody").append("<tr style='background:rgba(232, 235, 240, 0.4)'>" +
-                    "<td name='fundId' class='d-none'>1</td>" +
-                    "<td name='invName' class='col-lg-12 customTd' id='fundName' onclick='onRowSelected(this)'>" + fundVal + "<span class='fas fa-arrows-alt fa-2x float-right mg-r-10' style='color:rgba(53, 56, 68, 0.2)'></span></td>" +
-                    "</tr>");
+            $("#addDist").click(function () {
+                var distAmountVal = $('#distAmountInp').val();
+                var distMonthVal = $('#distMonthInp').val();
+
+                $.ajax({
+                    type: "POST",
+                    url: '/Home/DistRateList',
+                    data: {
+                        distAmount: distAmountVal,
+                        distMonth: distMonthVal
+                    },
+                    success: function (response) {
+                        location.reload();
+                    }
+                });
+
             });
 
-            $("#addInv").click(function () {
-                var invVal = $('#invInp').val();
+            $(".distRate").click(function () {
+                var tr = $("#distThead").find("tr");
+                var tdIndex = $(this).index();
+                var fundId = tr.find("td").eq(tdIndex).attr('data-id');
+                var month = $(this).parent().find("td").eq(1).text();
 
-                $("#investorBody").append("<tr style='background:rgba(232, 235, 240, 0.4)'>" +
-                    "<td name='invId' class='d-none'>1</td>" +
-                    "<td name='invName' class='col-lg-12 customTd' id='invName' onclick='onRowSelected(this)'>" + invVal + "</td>" +
-                    "</tr>");
-            });
+                $.ajax({
+                    type: "POST",
+                    url: '/Home/DistGetSubscribers',
+                    data: {
+                        fundId: fundId,
+                        month: month
+                    },
+                    success: function (response) {
+                        var subsList = response.list;
+                        $("#invSec").empty();
 
-            $("#addSub").click(function () {
-                var subsNameVal = $('#subsName').val();
-                var subsAmount = $('#subsAmountInp').val();
-                var subsFund = $('#subsFundInp').val();
-                var subsPs = $('#subsPsInp').val();
+                        $.each(subsList, function (index, value) {
+                            if (value.investorName != null) {
+                                var trTop = " ";
+                                if (index != 0)
+                                    trTop = " mg-t-20 ";
+                                $("#invSec").append("<div class='row mg-x-20 mg-t-10'>" +
+                                    "<div class='col-lg-6 pd-x-0'>" +
+                                    "<div class='pd-y-20' style='background:rgba(232, 235, 240, 0.4);border-radius:18px' onclick='divSelected(this)'>" +
+                                    "<h5 class='tx-18 mg-y-0 d-inline tx-normal mg-l-45' style='color:#353944'>" + value.investorName + "</h5>" +
+                                    "</div>" +
+                                    "</div>" +
+                                    "<div class='col-lg-6 pd-r-0 pd-l-20'>" +
+                                    "<div class='pd-y-20' style='background:rgba(232, 235, 240, 0.4);border-radius:18px'>" +
+                                    "<h5 class='tx-18 mg-y-0 mg-l-45 tx-normal' style='color:#353944'>" + value.investorAmount + "</h5>" +
+                                    "</div>" +
+                                    "</div>" +
+                                    "</div>");
+                            }
+                        });
 
-                $("#subsBody").append("<tr class='d-flex mg-t-20' style='background:rgba(232, 235, 240, 0.4);border-radius:18px'>" +
-                    "<td name='subsId' class='d-none'>1</td>" +
-                    "<td name='subsName' class='col-lg-2 customTd' id='subsName' onclick='onRowSelected(this)'>" + subsNameVal + "</td>" +
-                    "<td name='subsAmount' class='col-lg-2 offset-lg-4 customTd tx-center' id='subsAmount' onclick='onRowSelected(this)'>" + subsAmount + "</td>" +
-                    "<td name='subsFund' class='col-lg-2 customTd tx-center' id='subsFund' onclick='onRowSelected(this)'>" + subsFund + "</td>" +
-                    "<td name='subsPs' class='col-lg-2 customTd tx-center' id='subsPs' style='color:#009ADC !important' onclick='onRowSelected(this)'>" + subsPs + "</td>" +
-                    "</tr>");
+
+
+                    }
+                });
+
+
             });
 
 
 
         });
 
-        function onRowSelected(columnName) {
-            var $row = $(columnName).parents('tr');
-            $($row).addClass('activeRow').siblings().removeClass('activeRow');
-        }
-
-        function onColumnSelected(columnName) {
-            var $column = $(columnName);
-            $($column).addClass('activeRow').siblings().removeClass('activeRow');
-        }
-
-        function divSelected(divName) {
-            var $div = $(divName);
-            if ($div.hasClass("activeRow"))
-                $($div).removeClass('activeRow');
-            else
-                $($div).addClass('activeRow');
-
-        }
-
-    </script>
-
-
-    <script>
-        $(function () {
-
-            $("#fundTbody").sortable({
-                stop: function (event, ui) {
-
-                    $('ul li').each(function (index, item) {
-
-                        // Set each items "alt" attribute to it's corresponding spot in the list.
-                        // Added +1 so that it uses numbers 1-7 instead of 0-6
-                        var liContent = $(item).text();
-                        console.log(liContent);
-                    });
-
-                    console.log("New position: " + ui.item.index());
-                }
+        function onColumnSelect(columnName) {
+            $('#distBody tr').each(function () {
+                $(this).find(".distRate").removeClass('activeRow');
             });
+            $(columnName).addClass('activeRow');
+        }
 
-            $("#fundTbody").disableSelection();
-
-
-        });
     </script>
 
 }
