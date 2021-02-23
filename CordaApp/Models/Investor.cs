@@ -8,6 +8,6 @@ namespace CordaApp.Models
     public class Investor
     {
         public string investorName { get; set; }
-        public int investorAmount { get; set; }
+        public double investorAmount { get; set; }
     }
 }

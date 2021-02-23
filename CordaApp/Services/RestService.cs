@@ -14,7 +14,7 @@ namespace CordaApp.Services
         {
             string result;
 
-            var httpWebRequest = (HttpWebRequest)WebRequest.Create("http://40.117.224.114:8080/payStates/");
+            var httpWebRequest = (HttpWebRequest)WebRequest.Create("http://52.170.25.149:8080/payStates/");
             httpWebRequest.ContentType = "application/json";
             httpWebRequest.Method = "GET";
 
@@ -32,7 +32,7 @@ namespace CordaApp.Services
         public async Task<string> httpReqService(List<KeyValuePair<string, string>> parameters)
         {
             var client = new HttpClient();
-            client.BaseAddress = new Uri("http://40.117.224.114:8080");
+            client.BaseAddress = new Uri("http://52.170.25.149:8080");
             var request = new HttpRequestMessage(HttpMethod.Post, "/startIssuePay");
 
             request.Content = new FormUrlEncodedContent(parameters);

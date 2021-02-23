@@ -43,12 +43,8 @@
                                 <td class="col-lg-1 tx-center mg-r-5 tx-13 fundName" style="background:rgba(232, 235, 240, 0.4);border:none;border-radius:18px;color:#E0A100" data-id="@item["fundid"]">@item["fundname"]</td>
                             }
                             @{
-                                int fundCount = 0;
+                                int fundCount = ViewBag.fundList.Count;
                                 int itemCounter = 0;
-                                if (ViewBag.monthList.Count != 0)
-                                {
-                                    fundCount = ViewBag.amountList.Count / ViewBag.monthList.Count;
-                                }
                                 int divCol = 8 - fundCount;
                             }
                             <td class="col-lg-@divCol tx-center tx-13" style="background:rgba(232, 235, 240, 0.4);border:none;border-radius:18px;color:#E0A100">Distribution Type</td>
@@ -67,19 +63,23 @@
                                     monthDist += @ViewBag.amountList[counter];
                                     counter++;
                                 }
+                                @{
+                                    if (Math.Abs(ViewBag.fundRateList[0] - ViewBag.amountList[(itemCounter * fundCount)]) < 0.05)
+                                    {
+                                        <td class="col-lg-@divCol customTd tx-center mg-r-5">Normal Distribution</td>
+                                    }
+                                    else
+                                    {
+                                        if (ViewBag.fundRateList[0] > ViewBag.amountList[(itemCounter * fundCount)])
+                                        {
+                                            <td class="col-lg-@divCol customTd tx-center mg-r-5">Insufficient Distribution</td>
 
-                                @if (monthDist < int.Parse(ViewBag.distList[itemCounter]))
-                                {
-                                    <td class="col-lg-@divCol customTd tx-center mg-r-5">Over Distribution</td>
-                                }
-                                @if (monthDist == int.Parse(ViewBag.distList[itemCounter]))
-                                {
-                                    <td class="col-lg-@divCol customTd tx-center mg-r-5">Normal Distribution</td>
-                                }
-                                @if (monthDist > int.Parse(ViewBag.distList[itemCounter]))
-                                {
-
-                                    <td class="col-lg-@divCol customTd tx-center mg-r-5">Insufficient Distribution</td>
+                                        }
+                                        else
+                                        {
+                                            <td class="col-lg-@divCol customTd tx-center mg-r-5">Over Distribution</td>
+                                        }
+                                    }
                                 }
 
 
@@ -130,7 +130,7 @@
 
             <div class="table-content pd-t-10 pd-b-20" style="background-color: #ffffff;border-radius:30px;">
                 <div class="row mg-x-20" style="height:30px;background-color: #ffffff;border-radius: 30px 30px 0 0">
-                    <div class="col-lg-6 pd-x-0 pd-y-10" style="font-size: 21px;font-weight:500;color:#C7C7C7">INVESTORS OF CLASS A</div>
+                    <div class="col-lg-6 pd-x-0 pd-y-10" style="font-size: 21px;font-weight:500;color:#C7C7C7">INVESTORS</div>
                     <div class="col-lg-6 d-flex align-items-center pd-r-60">
                         <button type="button" class="btn btn-sm btn-default ml-auto" style="width:40px;background:rgba(182, 194, 214, 0.15) !important;border-radius: 10px;border:none" id="removeFund">
                             <span class="far fa-trash-alt fa-2x" style="color:rgba(53, 56, 68, 0.2);"></span>

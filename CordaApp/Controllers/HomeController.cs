@@ -11,7 +11,7 @@ using CordaApp.DatabaseClass;
 using CordaApp.Services;
 using Newtonsoft.Json;
 using System.Collections;
-using CordaApp.CustomClass;
+using System.Globalization;
 
 namespace CordaApp.Controllers
 {
@@ -20,11 +20,9 @@ namespace CordaApp.Controllers
         private RestService cordaRestService;
         private readonly ILogger<HomeController> _logger;
         SqlService sqlService = new SqlService();
-        NodeService nodeService;
 
         public HomeController(ILogger<HomeController> logger)
         {
-            nodeService = new NodeService();
             _logger = logger;
             cordaRestService = new RestService();
         }
@@ -54,8 +52,9 @@ namespace CordaApp.Controllers
             JArray cordaArr = (JArray)JsonConvert.DeserializeObject(responseStr);
 
             List<string> monthList = new List<string>();
-            List<int> amountList = new List<int>();
+            List<double> amountList = new List<double>();
             List<string> distList = new List<string>();
+            List<double> fundRateList = new List<double>();
 
             foreach (var cordaItem in cordaArr)
             {
@@ -63,18 +62,26 @@ namespace CordaApp.Controllers
                 string distAmount = cordaItem["state"]["data"]["distribution"].ToString();
                 if (!monthList.Contains(cordaMonth))
                 {
+                    double rate = 0;
                     foreach (var item in fundList)
                     {
                         double fundRate = double.Parse(item["distributionrate"].ToString());
                         json = new JObject();
                         json["fundid"] = item["fundid"];
 
+                        string fundId = item["fundid"].ToString();
+
                         JArray subscriberList = sqlService.AssetTransactionGet("Create Subscriber", json);
-                        int totalAmount = 0;
+                        double totalAmount = 0;
+                        double totalFundAmount = 0;
                         foreach (var subsItem in subscriberList)
                         {
                             if (subsItem["investmentamount"] != null)
                             {
+                                double subInvAmount = double.Parse(subsItem["investmentamount"].ToString());
+                                totalFundAmount += subInvAmount;
+                                rate = totalFundAmount * fundRate / 100;
+
                                 string invName = "O=" + subsItem["investorname"].ToString() + ", L = New York, C = US";
                                 invName = invName.Replace(" ", null);
 
@@ -82,10 +89,11 @@ namespace CordaApp.Controllers
                                 {
                                     string owner = cItem["state"]["data"]["owner"].ToString();
                                     string cMonth = cItem["state"]["data"]["month"].ToString();
+                                    string cFundId = cItem["state"]["data"]["fundid"].ToString();
                                     owner = owner.Replace(" ", null);
-                                    if (invName == owner && cMonth == cordaMonth)
+                                    if (invName == owner && cMonth == cordaMonth && cFundId == fundId)
                                     {
-                                        totalAmount += int.Parse((string)cItem["state"]["data"]["amount"]);
+                                        totalAmount += Convert.ToDouble(cItem["state"]["data"]["amount"]);
                                     }
 
                                 }
@@ -95,6 +103,7 @@ namespace CordaApp.Controllers
 
                         }
                         amountList.Add(totalAmount);
+                        fundRateList.Add(rate);
 
 
 
@@ -103,14 +112,15 @@ namespace CordaApp.Controllers
                     monthList.Add(cordaMonth);
                     distList.Add(distAmount);
                 }
-                
+
             }
 
-            
+
 
             ViewBag.monthList = monthList;
             ViewBag.amountList = amountList;
             ViewBag.distList = distList;
+            ViewBag.fundRateList = fundRateList;
 
             return View();
 
@@ -133,7 +143,6 @@ namespace CordaApp.Controllers
             JObject json = new JObject();
             json["fundid"] = fundId;
 
-
             sqlService.AssetTransactionModify("spc_AssetTransactionDelete", "Create Fund", json);
             return Json(new { success = true });
         }
@@ -141,9 +150,6 @@ namespace CordaApp.Controllers
         {
             JObject json = new JObject();
             json["investorname"] = invName;
-
-            //Create Corda Node
-            nodeService.NodeCreate(invName);
 
             sqlService.AssetTransactionModify("spc_AssetTransactionCreate", "Create Investor", json);
             return Json(new { success = true });
@@ -218,16 +224,17 @@ namespace CordaApp.Controllers
                 {
                     string invName = "O=" + subscriber["investorname"].ToString() + ", L = New York, C = US";
                     invName = invName.Replace(" ", null);
-                    int invAmount = 0;
+                    double invAmount = 0;
 
                     foreach (var cordaItem in cordaArr)
                     {
                         string owner = cordaItem["state"]["data"]["owner"].ToString();
                         string cordaMonth = cordaItem["state"]["data"]["month"].ToString();
+                        string cordaFundId = cordaItem["state"]["data"]["fundid"].ToString();
                         owner = owner.Replace(" ", null);
-                        if (invName == owner && month == cordaMonth)
+                        if (invName == owner && month == cordaMonth && fundId.ToString() == cordaFundId)
                         {
-                            invAmount += int.Parse((string)cordaItem["state"]["data"]["amount"]);
+                            invAmount += Convert.ToDouble(cordaItem["state"]["data"]["amount"]);
                         }
 
                     }
@@ -245,47 +252,68 @@ namespace CordaApp.Controllers
             return Json(new { list = invList });
         }
 
-        public async Task<JsonResult> DistRateList(int distAmount, int distMonth)
+        public async Task<JsonResult> DistRateList(string distAmount, int distMonth)
         {
             // Fund List
             JObject json = new JObject();
             JArray fundList = sqlService.AssetTransactionGet("Create Fund", json);
 
-            foreach (var item in fundList)
+            double newDistAmount = double.Parse(distAmount, CultureInfo.InvariantCulture);
+            double DistAmount = newDistAmount;
+            while (newDistAmount > 0)
             {
-                int fundRate = int.Parse(item["distributionrate"].ToString());
-                json = new JObject();
-                json["fundid"] = item["fundid"];
-
-                JArray subscriberList = sqlService.AssetTransactionGet("Create Subscriber", json);
-
-                foreach (var subsItem in subscriberList)
+                foreach (var item in fundList)
                 {
-                    if (subsItem["investmentamount"] != null)
+                    double fundRate = double.Parse(item["distributionrate"].ToString());
+                    json = new JObject();
+                    json["fundid"] = item["fundid"];
+
+                    JArray subscriberList = sqlService.AssetTransactionGet("Create Subscriber", json);
+
+                    foreach (var subsItem in subscriberList)
                     {
-                        int subInvAmount = int.Parse(subsItem["investmentamount"].ToString());
-                        int totalInvAmount = int.Parse(subsItem["totalinvestmentamount"].ToString());
-                        int cordaRate = (subInvAmount * fundRate) / totalInvAmount;
+                        string fundId = item["fundid"].ToString();
 
-                        string owner = "O=" + subsItem["investorname"].ToString() + ",L=New York,C=US";
-                        //string owner = "O=GroupB,L=New York,C=US";
+                        if (subsItem["investmentamount"] != null)
+                        {
+                            double subInvAmount = double.Parse(subsItem["investmentamount"].ToString());
+                            double totalInvAmount = double.Parse(subsItem["totalinvestmentamount"].ToString());
+                            double rate = ((totalInvAmount * fundRate) / 100) * (subInvAmount / totalInvAmount);
 
-                        var reqValues = new List<KeyValuePair<string, string>>();
-                        reqValues.Add(new KeyValuePair<string, string>("payName", "Dollar"));
-                        reqValues.Add(new KeyValuePair<string, string>("amount", distAmount.ToString()));
-                        reqValues.Add(new KeyValuePair<string, string>("owner", owner));
-                        reqValues.Add(new KeyValuePair<string, string>("rate", cordaRate.ToString()));
-                        reqValues.Add(new KeyValuePair<string, string>("month", distMonth.ToString()));
-                        reqValues.Add(new KeyValuePair<string, string>("distribution", distAmount.ToString()));
+                            if (rate > newDistAmount)
+                                rate = newDistAmount;
+                            double cordaRate = (rate / DistAmount) * 100;
+                            newDistAmount -= rate;
 
-                        string response = await cordaRestService.httpReqService(reqValues);
+                            string owner = "O=" + subsItem["investorname"].ToString() + ",L=New York,C=US";
+                            //string owner = "O=GroupB,L=New York,C=US";
+
+                            if (rate > 0)
+                            {
+                                var reqValues = new List<KeyValuePair<string, string>>();
+                                reqValues.Add(new KeyValuePair<string, string>("payName", "Dollar"));
+                                reqValues.Add(new KeyValuePair<string, string>("amount", distAmount));
+                                reqValues.Add(new KeyValuePair<string, string>("owner", owner));
+                                reqValues.Add(new KeyValuePair<string, string>("rate", Math.Round(cordaRate, 2).ToString().Replace(",",".")));
+                                reqValues.Add(new KeyValuePair<string, string>("month", distMonth.ToString()));
+                                reqValues.Add(new KeyValuePair<string, string>("distribution", distAmount));
+                                reqValues.Add(new KeyValuePair<string, string>("fundid", fundId));
+
+                                string response = await cordaRestService.httpReqService(reqValues);
+                            }
+
+
+                        }
+
 
                     }
 
+                    if (newDistAmount <= 0)
+                        break;
+
                 }
-
-
             }
+
 
 
             return Json(new { success = true });
