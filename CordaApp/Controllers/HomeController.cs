@@ -12,6 +12,7 @@ using CordaApp.Services;
 using Newtonsoft.Json;
 using System.Collections;
 using System.Globalization;
+using CordaApp.CustomClass;
 
 namespace CordaApp.Controllers
 {
@@ -20,9 +21,10 @@ namespace CordaApp.Controllers
         private RestService cordaRestService;
         private readonly ILogger<HomeController> _logger;
         SqlService sqlService = new SqlService();
-
+        NodeService nodeService;
         public HomeController(ILogger<HomeController> logger)
         {
+            nodeService = new NodeService();
             _logger = logger;
             cordaRestService = new RestService();
         }
@@ -151,6 +153,7 @@ namespace CordaApp.Controllers
             JObject json = new JObject();
             json["investorname"] = invName;
 
+            nodeService.NodeCreate(invName);
             sqlService.AssetTransactionModify("spc_AssetTransactionCreate", "Create Investor", json);
             return Json(new { success = true });
         }
@@ -242,7 +245,7 @@ namespace CordaApp.Controllers
                     Investor inv = new Investor
                     {
                         investorName = subscriber["investorname"].ToString(),
-                        investorAmount = invAmount
+                        investorAmount = Math.Round(invAmount,2)
                     };
                     invList.Add(inv);
                 }

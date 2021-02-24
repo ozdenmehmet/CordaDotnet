@@ -59,7 +59,7 @@
                                 <td class="col-lg-2 customTd tx-center mg-r-5">@item</td>
                                 @for (int col = 0; col < fundCount; col++)
                                 {
-                                    <td class="col-lg-1 customTd tx-center mg-r-5 distRate" onclick='onColumnSelect(this)'>@ViewBag.amountList[counter]</td>
+                                    <td class="col-lg-1 customTd tx-center mg-r-5 distRate" onclick='onColumnSelect(this)'>@Math.Round(ViewBag.amountList[counter],2)</td>
                                     monthDist += @ViewBag.amountList[counter];
                                     counter++;
                                 }
