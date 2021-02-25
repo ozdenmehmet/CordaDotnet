@@ -1,0 +1,79 @@
+## Corda Setup ## *Windows
+
+git clone https://github.com/corda/cordapp-template-java.git
+
+// Clear build folder 
+gradlew clean
+
+-Intellij Terminal
+	gradlew clean deployNodes
+	cd build/nodes
+	runnodes.bat
+
+start shipmentFlow model: Cybertruck, owner: "O=SpaceX,L=New York,C=US"
+
+start shipmentFlow model: Model X, owner: "O=SpaceX,L=New York,C=US"
+
+start shipmentFlow model: Model X, owner: "O=Hamdiye,L=New York,C=US"
+
+start shipmentFlow model: Model S, owner: "O=Veli,L=London,C=GB"
+
+start shipmentFlow model: Model S, owner: "O=Tur, L=Istanbul, C=TR"
+
+run vaultQuery contractStateType: com.template.states.CarState
+
+
+
+localhost:10006 user1 test 10200 3 “C:\Users\mehmet\Desktop\Corda\Tesla-cordapp\build\nodes\Tesla\cordapps”
+
+localhost:10004 user1 test 10200 3 “C:\Users\mehmet\Desktop\Corda\bootcamp-cordapp\build\nodes\PartyA\cordapps”
+
+localhost:10009 user1 test 10200 3 “C:\Users\mehmet\Desktop\Corda\cordapp-template-java\build\nodes\SpaceX\cordapps”
+
+
+
+
+
+start TokenizeNonFungibleSpaceship holder: "O=PartyA,L=London,C=GB", model: "CreosafeX-1", planetOfOrigin: "Earth", seatingCapacity: 16, value: "1000 USD"
+
+start BuySpaceshipInitiator shipId: "1", seller: "O=PartyA,L=London,C=GB"
+
+run vaultQuery contractStateType: net.corda.samples.spaceships.states.SpaceshipTokenType
+
+run networkMapSnapshot
+
+//Connect to corda console
+ssh -p 2222 localhost -l user1
+
+ssh-keygen -R [52.170.25.149]:2222
+
+ssh -p 2222 52.170.25.149 -l user1
+
+//Start all stopped docker images
+docker restart $(docker ps -a -f status=exited -q)
+
+
+//Remove all exited containers
+docker rm $(docker ps -a -f status=exited -q)
+
+docker exec -it a29cd4d8be94 /bin/bash
+
+
+docker cp additional-node-infos/* $($(docker ps -a -q):/opt/corda/additional-node-infos)
+
+
+##Corda Server
+
+ssh cordalogin@52.170.25.149
+
+
+cordalogin / OfisiOzledim!
+
+sudo kill -9 `sudo lsof -t -i:5000`
+
+sudo kill -9 `sudo lsof -t -i:8080`
+
+sudo kill -9 `sudo lsof -t -i:10050`
+
+
+~/cordaDotnet/CordaDotnet/CordaApp/bin/Debug/netcoreapp3.1/publish
