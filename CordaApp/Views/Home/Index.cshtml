@@ -21,9 +21,9 @@
         <div class="col-lg-6">
 
             <div class="table-content pd-b-10" style="background-color: #ffffff;border-radius:30px;">
-                <div class="row mg-x-0" style="height:30px;background-color: #ffffff;border-radius: 30px 30px 0 0;">
+                <div class="row mg-x-0 mg-b-15" style="height:30px;background-color: #ffffff;border-radius: 30px 30px 0 0;">
                     <div class="col-lg-6 pd-l-20 pd-y-10" style="font-size: 21px;font-weight:500;color:#C7C7C7">FUNDS</div>
-                    <div class="col-lg-6 d-flex align-items-center pd-r-40">
+                    <div class="col-lg-6 d-flex align-items-center pd-r-35">
                         <button type="button" class="btn btn-sm btn-default ml-auto" style="width:40px;background:rgba(182, 194, 214, 0.15) !important;border-radius: 10px;border:none" id="removeFund">
                             <span class="far fa-trash-alt fa-2x" style="color:rgba(53, 56, 68, 0.2);"></span>
                         </button>
@@ -38,10 +38,10 @@
                                 <td name="fundOr" class="d-none">@item["fundorder"]</td>
                                 <td name="fundName" class="d-none">@item["fundname"]</td>
                                 <td name="fundDist" class="d-none">@item["distributionrate"]</td>
-                                <td name="fundName" class="col-lg-12 customTd fundName" onclick="onRowSelect(this)">
+                                <td name="fundName" class="col-lg-12 customTd fundName" style="padding-top:6px;padding-bottom:6px" onclick="onRowSelect(this)">
                                     @item["fundname"]
-                                    <span class="fas fa-arrows-alt fa-2x float-right mg-r-10" style="color:rgba(53, 56, 68, 0.2);"></span>
-                                    <h5 class="float-right mg-r-120 mg-t-5 mg-b-0" style="color:#353944;font-size:18px;font-weight:400">Rate: @item["distributionrate"]</h5>
+                                    <span class="fas fa-arrows-alt fa-lg float-right mg-r-10" style="color:rgba(53, 56, 68, 0.2);margin-top:8px"></span>
+                                    <h5 class="float-right mg-r-120 mg-t-5 mg-b-0" style="color:#353944;font-size:18px;font-weight:400">Rate: @item["distributionrate"]%</h5>
                                 </td>
                             </tr>
                         }
@@ -61,8 +61,8 @@
                                 <input type="text" class="form-control pd-l-0" style="background:transparent;border:none;border-bottom: 1px solid rgba(0, 0, 0, 0.1);border-radius:0px" id="distRateInp" placeholder="Distribution Rate">
                             </div>
                             <div class="col-lg-1 d-flex align-items-center">
-                                <button id="addFund" type="button" class="btn btn-sm btn-default" style="width:40px;background:rgba(182, 194, 214, 0.15) !important;border-radius: 10px;border:none">
-                                    <span class="fas fa-check fa-lg" style="color:#6FB86E"></span>
+                                <button id="addFund" type="button" class="btn btn-sm btn-default" style="width:40px;height:34px;margin-left:-3px;background:rgba(182, 194, 214, 0.15) !important;border-radius: 10px;border:none">
+                                    <span class="fas fa-check fa-lg" style="color:#6FB86E;width:24px"></span>
                                 </button>
                             </div>
                         </div>
@@ -80,9 +80,9 @@
         <div class="col-lg-6">
 
             <div class="table-content pd-b-10" style="background-color: #ffffff;border-radius:30px;">
-                <div class="row mg-x-0" style="height:30px;background-color: #ffffff;border-radius: 30px 30px 0 0;">
+                <div class="row mg-x-0 mg-b-15" style="height:30px;background-color: #ffffff;border-radius: 30px 30px 0 0;">
                     <div class="col-lg-6 pd-l-20 pd-y-10" style="font-size: 21px;font-weight:500;color:#C7C7C7;">INVESTOR POOL</div>
-                    <div class="col-lg-6 d-flex align-items-center pd-r-40">
+                    <div class="col-lg-6 d-flex align-items-center pd-r-35">
                         <button type="button" class="btn btn-sm btn-default ml-auto" style="width:40px;background:rgba(182, 194, 214, 0.15) !important;border-radius: 10px;border:none" id="removeInv">
                             <span class="far fa-trash-alt fa-2x" style="color:rgba(53, 56, 68, 0.2);"></span>
                         </button>
@@ -94,7 +94,7 @@
                         {
                             <tr style="background:rgba(232, 235, 240, 0.4)">
                                 <td name="invId" class="d-none">@item["userid"]</td>
-                                <td name="invName" class="col-lg-12 customTd" onclick="onRowSelect(this)">@item["investorname"]</td>
+                                <td name="invName" class="col-lg-12 customTd" style="padding-top:6px;padding-bottom:6px" onclick="onRowSelect(this)">@item["investorname"]</td>
                             </tr>
                         }
                     </tbody>
@@ -155,11 +155,11 @@
                 <div class="mg-x-20" style="background:rgba(232, 235, 240, 0.4);border-radius:18px">
 
                     <div class="form-group tx-left pd-l-25 pd-r-20 pd-t-10 pd-b-10">
-                        <label for="exampleInputEmail1" class="mg-b-0" style="color:#0057FF;font-size:12px">ADD A NEW SUBSCRIBER</label>
+                        <label for="exampleInputEmail1" class="mg-b-0 mg-l-5" style="color:#0057FF;font-size:12px">ADD A NEW SUBSCRIBER</label>
 
                         <div class="form-row">
-                            <div class="col-lg-5">
-                                <select class="form-control" style="background:transparent;border:none;border-bottom: 1px solid rgba(0, 0, 0, 0.1);" id="subsName">
+                            <div class="col-lg-6 pd-r-25-force">
+                                <select class="form-control pd-l-0" style="background:transparent;border:none;border-bottom: 1px solid rgba(0, 0, 0, 0.1);" id="subsName">
                                     <option disabled="disabled" selected="">Select Investor</option>
                                     @foreach (var item in ViewBag.invList)
                                     {
@@ -167,11 +167,11 @@
                                     }
                                 </select>
                             </div>
-                            <div class="col-lg-6">
+                            <div class="col-lg-5 pd-l-30-force">
                                 <input type="text" class="form-control pd-l-0" style="background:transparent;border:none;border-bottom: 1px solid rgba(0, 0, 0, 0.1);" id="subsAmountInp" placeholder="Investment Amount">
                             </div>
                             <div class="col-lg-1 d-flex align-items-center">
-                                <button id="addSub" type="button" class="btn btn-sm btn-default" style="width:40px;background:rgba(182, 194, 214, 0.15) !important;border-radius: 10px;border:none">
+                                <button id="addSub" type="button" class="btn btn-sm btn-default ml-auto" style="width:40px;height:34px;background:rgba(182, 194, 214, 0.15) !important;border-radius: 10px;border:none">
                                     <span class="fas fa-check fa-lg" style="color:#6FB86E"></span>
                                 </button>
                             </div>
@@ -209,7 +209,7 @@
 
                 $("#fundTbody").append("<tr style='background:rgba(232, 235, 240, 0.4)'>" +
                     "<td name='fundId' class='d-none'>1</td>" +
-                    "<td name='fundName' class='col-lg-12 customTd fundName' onclick='onRowSelect(this)'>" + fundVal + "<span class='fas fa-arrows-alt fa-2x float-right mg-r-10' style='color:rgba(53, 56, 68, 0.2)'></span></td>" +
+                    "<td name='fundName' class='col-lg-12 customTd fundName' style='padding-top:6px;padding-bottom:6px' onclick='onRowSelect(this)'>" + fundVal + "<span class='fas fa-arrows-alt fa-lg float-right mg-r-10' style='color:rgba(53, 56, 68, 0.2);margin-top:8px'></span><h5 class='float-right mg-r-120 mg-t-5 mg-b-0' style='color:#353944;font-size:18px;font-weight:400'>Rate: " + distVal + "%</h5></td>" +
                     "</tr>");
 
                 $.ajax({
@@ -249,7 +249,7 @@
 
                 $("#investorBody").append("<tr style='background:rgba(232, 235, 240, 0.4)'>" +
                     "<td name='invId' class='d-none'>1</td>" +
-                    "<td name='invName' class='col-lg-12 customTd' onclick='onRowSelect(this)'>" + invVal + "</td>" +
+                    "<td name='invName' class='col-lg-12 customTd' style='padding-top:6px;padding-bottom:6px' onclick='onRowSelect(this)'>" + invVal + "</td>" +
                     "</tr>");
 
                 $.ajax({
@@ -294,8 +294,8 @@
                 $("#subsBody").append("<tr class='d-flex mg-t-20 mg-r-20'>" +
                     "<td name='fundId' class='d-none'>" + fundId + "</td>" +
                     "<td name='userId' class='d-none'>" + invId + "</td>" +
-                    "<td name='subsName' class='col-lg-6 customTd mg-r-20 subsName' style='background: rgba(232, 235, 240, 0.4)' onclick='onColumnSelect(this)'>" + subsName + "</td>" +
-                    "<td name='subsAmount' class='col-lg-6 customTd' style='background: rgba(232, 235, 240, 0.4)'>$ " + subsAmount + "</td>" +
+                    "<td name='subsName' class='col-lg-6 customTd mg-r-20 subsName' style='padding-top:6px;padding-bottom:6px;background: rgba(232, 235, 240, 0.4)' onclick='onColumnSelect(this)'>" + subsName + "</td>" +
+                    "<td name='subsAmount' class='col-lg-6 customTd' style='padding-top:6px;padding-bottom:6px;background: rgba(232, 235, 240, 0.4)'>$ " + subsAmount + "</td>" +
                     "</tr>");
 
                 $.ajax({
@@ -371,8 +371,8 @@
                             $("#subsBody").append("<tr class='d-flex" + trTop + "mg-r-20'>" +
                                 "<td name='fundId' class='d-none'>" + value.fundid + "</td>" +
                                 "<td name='userId' class='d-none'>" + value.userid + "</td>" +
-                                "<td name='subsName' class='col-lg-6 customTd mg-r-20 subsName' style='background: rgba(232, 235, 240, 0.4)' onclick='onColumnSelect(this)'>" + value.investorname + "</td>" +
-                                "<td name='subsAmount' class='col-lg-6 customTd' style='background: rgba(232, 235, 240, 0.4)'>$ " + value.investmentamount +"</td>" +
+                                "<td name='subsName' class='col-lg-6 customTd mg-r-20 subsName' style='padding-top:6px;padding-bottom:6px;background: rgba(232, 235, 240, 0.4)' onclick='onColumnSelect(this)'>" + value.investorname + "</td>" +
+                                "<td name='subsAmount' class='col-lg-6 customTd' style='padding-top:6px;padding-bottom:6px;background: rgba(232, 235, 240, 0.4)'>$ " + value.investmentamount +"</td>" +
                                 "</tr>");
                         }
                     });
@@ -406,8 +406,6 @@
                         var fundId = $(this).find("td").eq(0).html();
                         var fundName = $(this).find("td").eq(2).html();
                         var fundDist = $(this).find("td").eq(3).html();
-
-                        console.log("Fund Id:" + fundId + " " + "Fund Name:" + fundName + " " + "Dist:" + fundDist + " " + "Order:" + orIndex + 1);
 
                         $.ajax({
                             type: "POST",

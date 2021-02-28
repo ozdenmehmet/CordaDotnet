@@ -5,10 +5,11 @@ using System.Threading.Tasks;
 
 namespace CordaApp.Models
 {
-    public class Investor
+    public class InvestorInv
     {
         public string investorName { get; set; }
-        public double investorAmount { get; set; }
-        public List<InvestorInv> investmentList { get; set; }
+        public string fundName { get; set; }
+        public string month { get; set; }
+        public double amount { get; set; }
     }
 }

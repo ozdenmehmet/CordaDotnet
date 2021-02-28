@@ -36,16 +36,16 @@
                 <table class="table table-borded tableCustom" id="table-list" style="border-radius:30px;padding-left: 20px;text-align: left;padding-right: 20px;">
                     <thead id="distThead">
                         <tr class="d-flex mg-r-35">
-                            <td class="col-lg-2 tx-center mg-r-5 tx-13" style="background:rgba(232, 235, 240, 0.4);border:none;border-radius:18px;color:#E0A100">Distribution</td>
-                            <td class="col-lg-2 tx-center mg-r-5 tx-13" style="background:rgba(232, 235, 240, 0.4);border:none;border-radius:18px;color:#E0A100">Month</td>
+                            <td class="col-lg-1 tx-center mg-r-5 tx-13" style="background:rgba(232, 235, 240, 0.4);border:none;border-radius:18px;color:#E0A100">Distribution</td>
+                            <td class="col-lg-1 tx-center mg-r-5 tx-13" style="background:rgba(232, 235, 240, 0.4);border:none;border-radius:18px;color:#E0A100">Month</td>
                             @foreach (var item in ViewBag.fundList)
                             {
-                                <td class="col-lg-1 tx-center mg-r-5 tx-13 fundName" style="background:rgba(232, 235, 240, 0.4);border:none;border-radius:18px;color:#E0A100" data-id="@item["fundid"]">@item["fundname"]</td>
+                                <td class="col-lg-2 tx-center mg-r-5 tx-13 fundName" style="background:rgba(232, 235, 240, 0.4);border:none;border-radius:18px;color:#E0A100" data-id="@item["fundid"]">@item["fundname"]</td>
                             }
                             @{
                                 int fundCount = ViewBag.fundList.Count;
                                 int itemCounter = 0;
-                                int divCol = 8 - fundCount;
+                                int divCol = 10 - (fundCount*2);
                             }
                             <td class="col-lg-@divCol tx-center tx-13" style="background:rgba(232, 235, 240, 0.4);border:none;border-radius:18px;color:#E0A100">Distribution Type</td>
                     </thead>
@@ -54,30 +54,41 @@
                         {
                             int monthDist = 0;
                             int counter = itemCounter * fundCount;
+                            int fundRateCounter = 0;
                             <tr class="d-flex mg-r-35 mg-b-20" style="border-radius:18px">
-                                <td class="col-lg-2 customTd tx-center mg-r-5">@ViewBag.distList[itemCounter]</td>
-                                <td class="col-lg-2 customTd tx-center mg-r-5">@item</td>
+                                <td class="col-lg-1 customTd tx-center mg-r-5 d-flex align-items-center justify-content-center">@ViewBag.distList[itemCounter]</td>
+                                <td class="col-lg-1 customTd tx-center mg-r-5 d-flex align-items-center justify-content-center">@item</td>
                                 @for (int col = 0; col < fundCount; col++)
                                 {
-                                    <td class="col-lg-1 customTd tx-center mg-r-5 distRate" onclick='onColumnSelect(this)'>@Math.Round(ViewBag.amountList[counter],2)</td>
+                                    <td class="col-lg-2 customTd tx-center mg-r-5 distRate d-flex align-items-center justify-content-center" onclick='onColumnSelect(this)'>@Math.Round(ViewBag.amountList[counter],2).ToString().Replace(",",".")</td>
                                     monthDist += @ViewBag.amountList[counter];
                                     counter++;
                                 }
                                 @{
-                                    if (Math.Abs(ViewBag.fundRateList[0] - ViewBag.amountList[(itemCounter * fundCount)]) < 0.05)
+                                    double fundRateTotal = 0;
+                                    int fCounter = 0;
+                                    while(fCounter<=fundCount)
                                     {
-                                        <td class="col-lg-@divCol customTd tx-center mg-r-5">Normal Distribution</td>
+                                        fundRateTotal += ViewBag.fundRateList[fundRateCounter];
+                                        fCounter++;
+                                        fundRateCounter++;
+                                        if ((fCounter) % fundCount == 0)
+                                            break;
+                                    }
+                                    if (Math.Abs(fundRateTotal - double.Parse(ViewBag.distList[itemCounter])) < 0.05)
+                                    {
+                                        <td class="col-lg-@divCol customTd tx-center mg-r-5 d-flex align-items-center justify-content-center">Normal Distribution</td>
                                     }
                                     else
                                     {
-                                        if (ViewBag.fundRateList[0] > ViewBag.amountList[(itemCounter * fundCount)])
+                                        if (fundRateTotal > double.Parse(ViewBag.distList[itemCounter]))
                                         {
-                                            <td class="col-lg-@divCol customTd tx-center mg-r-5">Insufficient Distribution</td>
+                                            <td class="col-lg-@divCol customTd tx-center mg-r-5 d-flex align-items-center justify-content-center">Insufficient Distribution</td>
 
                                         }
                                         else
                                         {
-                                            <td class="col-lg-@divCol customTd tx-center mg-r-5">Over Distribution</td>
+                                            <td class="col-lg-@divCol customTd tx-center mg-r-5 d-flex align-items-center justify-content-center">Over Distribution</td>
                                         }
                                     }
                                 }
@@ -130,12 +141,7 @@
 
             <div class="table-content pd-t-10 pd-b-20" style="background-color: #ffffff;border-radius:30px;">
                 <div class="row mg-x-20" style="height:30px;background-color: #ffffff;border-radius: 30px 30px 0 0">
-                    <div class="col-lg-6 pd-x-0 pd-y-10" style="font-size: 21px;font-weight:500;color:#C7C7C7">INVESTORS</div>
-                    <div class="col-lg-6 d-flex align-items-center pd-r-60">
-                        <button type="button" class="btn btn-sm btn-default ml-auto" style="width:40px;background:rgba(182, 194, 214, 0.15) !important;border-radius: 10px;border:none" id="removeFund">
-                            <span class="far fa-trash-alt fa-2x" style="color:rgba(53, 56, 68, 0.2);"></span>
-                        </button>
-                    </div>
+                    <div class="col-lg-6 pd-x-0 pd-y-10" style="font-size: 21px;font-weight:500;color:#C7C7C7" id="distSubsTx">INVESTORS</div>
                 </div>
 
                 <div class="row mg-x-20 mg-t-20">
@@ -193,8 +199,10 @@
             $(".distRate").click(function () {
                 var tr = $("#distThead").find("tr");
                 var tdIndex = $(this).index();
+                var fundName = tr.find("td").eq(tdIndex).text();
                 var fundId = tr.find("td").eq(tdIndex).attr('data-id');
                 var month = $(this).parent().find("td").eq(1).text();
+                $("#distSubsTx").text("INVESTORS OF "+fundName);
 
                 $.ajax({
                     type: "POST",
@@ -210,12 +218,16 @@
                         $.each(subsList, function (index, value) {
                             if (value.investorName != null) {
                                 var trTop = " ";
+                                var colId = "collapse_"+index;
                                 if (index != 0)
                                     trTop = " mg-t-20 ";
                                 $("#invSec").append("<div class='row mg-x-20 mg-t-10'>" +
                                     "<div class='col-lg-6 pd-x-0'>" +
                                     "<div class='pd-y-20' style='background:rgba(232, 235, 240, 0.4);border-radius:18px' onclick='divSelected(this)'>" +
                                     "<h5 class='tx-18 mg-y-0 d-inline tx-normal mg-l-45' style='color:#353944'>" + value.investorName + "</h5>" +
+                                    "<a class='collapsed' data-toggle='collapse' href='#" + colId + "' role='button' aria-expanded='false' aria-controls='" + colId + "' style='cursor: default; color: #1d1d1b; padding-left:0px;padding-right: 0px; text-decoration: none;'>" +
+                                        "<span class='fas fa-angle-down fa-2x float-right mg-r-60' style='color:rgba(53, 56, 68, 0.2);'></span>" +
+                                    "</a>" +
                                     "</div>" +
                                     "</div>" +
                                     "<div class='col-lg-6 pd-r-0 pd-l-20'>" +
@@ -223,7 +235,34 @@
                                     "<h5 class='tx-18 mg-y-0 mg-l-45 tx-normal' style='color:#353944'>" + value.investorAmount + "</h5>" +
                                     "</div>" +
                                     "</div>" +
-                                    "</div>");
+                                    "</div>" + 
+                                    "<div class='row mg-x-20 mg-t-10'>" +
+                                    "<div class='col-lg-6 collapse' id='" + colId + "' style='background:rgba(0, 87, 255, 0.08);border-radius:18px'>" +
+                                        "<div class='pd-y-0'>" +
+                                            "<table class='table invTable mg-l-15'>" +
+                                                "<thead>" +
+                                                    "<tr class='row pd-l-20'>" +
+                                                        "<td class='col-lg-6 pd-b-5-force' style='color:#0057FF'>Fund Name</td>" +
+                                                        "<td class='col-lg-3 pd-b-5-force' style='color:#0057FF'>Month</td>" +
+                                                        "<td class='col-lg-3 pd-b-5-force' style='color:#0057FF'>Amount</td>" +
+                                                    "</tr>" +
+                                                "</thead>" +
+                                    "<tbody id='invTbody"+index+"'>");
+
+                                    $.each(value.investmentList, function (subIndex, subValue) {
+                                        if (value.investorName == subValue.investorName) {
+                                            $("#invTbody"+index).append("<tr class='row pd-l-20'>" +
+                                                "<td class='col-lg-6 pd-b-5-force' style='color:#353944'>" + subValue.fundName + "</td>" +
+                                                "<td class='col-lg-3 pd-b-5-force' style='color:#353944'>" + subValue.month + "</td>" +
+                                                "<td class='col-lg-3 pd-b-5-force' style='color:#353944'>$ " + subValue.amount + "</td>" +
+                                                "</tr>");
+                                                        }
+                                    });
+                                                $("#invSec").append("</tbody>" +
+                                            "</table>" +
+                                        "</div>" +
+                                    "</div>" +
+                                "</div>");
                             }
                         });
 
